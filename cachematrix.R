@@ -1,15 +1,36 @@
-## Put comments here that give an overall description of what your
-## functions do
+## If the two matrices are same then it returns the values from the memory, it doesn't calculate 
+## it again.
 
-## Write a short comment describing this function
+## This function calculates the inverse
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix<- function(x = matrix) {
+        i <- NULL
+        set <- function(y) {
+                x <<- y
+                i <<- NULL
+        }
+        get <- function() x
+        set_inverse <- function(solve){i <<-solve} 
+        get_inverse <- function() i
+        list(set = set, get = get,
+             set_inverse = set_inverse,
+             get_inverse = get_inverse)
 }
 
 
-## Write a short comment describing this function
+## If the two matrices are same then it returns the result from the memory instead of calculating it again.
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve  <- function(x, ...) {
+        i <- x$get_inverse()
+        y<- set()
+        if(is.matrix(x) && is.matrix(y) && dim(x) == dim(y) && all(x == y))  {
+                message("getting cached data")
+                return(i)
+        }
+        data <- x$get()
+        i <- solve(data, ...)
+        x$set_inverse(i)
+        i   
+        
+        
 }
